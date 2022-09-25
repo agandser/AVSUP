@@ -1,11 +1,11 @@
 import time
 import requests
 delay = int(input("введите задержку между проверками постов"))
-chlink = input("введите ссылку на канал")
+link = input("введите ссылку на канал")
 keyn = input("введите ключ")
 views = int(input("введите количество просмотров"))
 
-chlink = f"{chlink[:12]}/s/{chlink[13:]}"
+chlink = f"{link[:12]}/s/{link[13:]}"
 print(chlink)
 def new_post(oldnum, num, views):
     if num > oldnum:
@@ -15,7 +15,7 @@ def new_post(oldnum, num, views):
         "action":"add",
         "quantity":f"{views}",
         "service":"705",
-        "link":f"{chlink}/{num}"
+        "link":f"{link}/{num}"
     })
         print(views.text)
         if "order" in views.text:
@@ -54,3 +54,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
