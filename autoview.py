@@ -15,7 +15,7 @@ def new_post(oldnum, num, views):
         "action":"add",
         "quantity":f"{views}",
         "service":"705",
-        "link":f"https://t.me/hucciflip/{num}"
+        "link":f"{chlink}/{num}"
     })
         print(views.text)
         if "order" in views.text:
@@ -34,7 +34,8 @@ def collect_data(link):
     text = response.text.split("\n")
     for i in text:
         if '<link rel="canonical" href="' in i:
-            num = i[51:-2]
+            i = i.split("?before=")
+            num = i[1][:-2]
             print(i)
             break
     print(num)
