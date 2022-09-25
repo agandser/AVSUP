@@ -1,13 +1,13 @@
 import time
 import requests
-from bs4 import BeautifulSoup
 delay = int(input("введите задержку между проверками постов"))
 chlink = input("введите ссылку на канал")
 keyn = input("введите ключ")
 views = int(input("введите количество просмотров"))
+
 chlink = f"{chlink[:12]}/s/{chlink[13:]}"
 print(chlink)
-def new_post(oldnum, num, keyn, views):
+def new_post(oldnum, num, views):
     if num > oldnum:
         oldnum = num
         views = requests.post("https://smmprime.com/api/v2", json =  {
@@ -31,10 +31,13 @@ def collect_data(link):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36'
     }
     response = requests.get(link, headers=headers)
-
-    soup = BeautifulSoup(response.text, 'lxml')
-
-    num = str(soup.find('link', rel='canonical'))[32:-19]
+    text = response.text.split("\n")
+    for i in text:
+        if '<link rel="canonical" href="' in i:
+            num = i[51:-2]
+            print(i)
+            break
+    print(num)
     num = int(num)
     return num-1
 
@@ -42,7 +45,7 @@ def main():
     oldnum = collect_data(chlink)
     while True:
         num = collect_data(chlink)
-        oldnum = new_post(oldnum, num, keyn, views)
+        oldnum = new_post(oldnum, num, views)
         time.sleep(delay)
         if oldnum == "pen":
             break
